@@ -22,6 +22,15 @@ const run = async () => {
     const reviewCollection = client
       .db("sherrifs-video-game")
       .collection("reviews");
+    const gameCollection = client.db("sherrifs-video-game").collection("games");
+
+    // GET All Games
+    app.get("/games", async (req, res) => {
+      const query = {};
+      const cursor = gameCollection.find(query);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
     // GET All Reviews
     app.get("/reviews", async (req, res) => {
