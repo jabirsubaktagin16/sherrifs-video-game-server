@@ -40,6 +40,9 @@ const run = async () => {
       .collection("reviews");
     const gameCollection = client.db("sherrifs-video-game").collection("games");
     const userCollection = client.db("sherrifs-video-game").collection("users");
+    const orderCollection = client
+      .db("sherrifs-video-game")
+      .collection("orders");
 
     // Token Generate and Store User Email in Database
     app.put("/user/:email", async (req, res) => {
@@ -80,6 +83,21 @@ const run = async () => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await gameCollection.findOne(query);
+      res.send(result);
+    });
+
+    // Order
+    app.get("/order/:id", verifyJWT, async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: ObjectId(id) };
+      const result = await orderCollection.findOne(query);
+      res.send(result);
+    });
+
+    // POST An Order
+    app.post("/order", async (req, res) => {
+      const newOrder = req.body;
+      const result = await orderCollection.insertOne(newOrder);
       res.send(result);
     });
   } finally {
