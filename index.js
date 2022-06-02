@@ -104,6 +104,8 @@ const run = async () => {
     });
 
     // Order
+
+    // Order by Email
     app.get("/order", verifyJWT, async (req, res) => {
       const customer = req.query.customer;
       const decodedEmail = req.decoded.email;
