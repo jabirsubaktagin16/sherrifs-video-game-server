@@ -82,11 +82,44 @@ const run = async () => {
       res.send(result);
     });
 
+    // Review Post
+    app.post("/reviews", verifyJWT, async (req, res) => {
+      const review = req.body;
+      const result = await reviewCollection.insertOne(review);
+      res.send(result);
+    });
+
     // Get Single Game by Id
     app.get("/game/:id", async (req, res) => {
       const id = req.params.id;
       const query = { _id: ObjectId(id) };
       const result = await gameCollection.findOne(query);
+      res.send(result);
+    });
+
+    // User Info Update
+    app.get("/user/:email", verifyJWT, async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await userCollection.findOne(query);
+      res.send(result);
+    });
+
+    app.patch("/user/:id", verifyJWT, async (req, res) => {
+      const id = req.params.id;
+      const user = req.body;
+      const filter = { _id: ObjectId(id) };
+      const updatedDoc = {
+        $set: {
+          name: user.name,
+          email: user.email,
+          contactNo: user.contactNo,
+          img: user.img,
+          occupation: user.occupation,
+          favouriteGames: user.favouriteGames,
+        },
+      };
+      const result = await userCollection.updateOne(filter, updatedDoc);
       res.send(result);
     });
 
