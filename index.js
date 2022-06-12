@@ -98,7 +98,7 @@ const run = async () => {
     });
 
     // User Info Update
-    app.get("/user/:email", verifyJWT, async (req, res) => {
+    app.get("/user/:email", async (req, res) => {
       const email = req.params.email;
       const query = { email: email };
       const result = await userCollection.findOne(query);
@@ -113,7 +113,6 @@ const run = async () => {
         $set: {
           name: user.name,
           email: user.email,
-          contactNo: user.contactNo,
           img: user.img,
           occupation: user.occupation,
           favouriteGames: user.favouriteGames,
