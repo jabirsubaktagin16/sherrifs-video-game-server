@@ -11,6 +11,12 @@ const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY);
 app.use(cors());
 app.use(express.json());
 
+app.use((req, res, next) => {
+  res.setHeader('Cache-Control', 'no-cache');
+  next();
+});
+
+
 const verifyJWT = (req, res, next) => {
   const authHeader = req.headers.authorization;
   if (!authHeader) {
